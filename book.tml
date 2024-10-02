@@ -1,0 +1,6 @@
+[book]
+authors = ["Fabio Hinojosa Jimenez"]
+language = "en"
+multilingual = false
+src = "classbot"
+title = "CIS 340 Exam questions"
