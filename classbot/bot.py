@@ -3,9 +3,8 @@ import os
 
 import aiofiles
 import discord
-from dotenv import load_dotenv
 
-load_dotenv()
+from . import config, database
 
 bot_token = os.getenv('DISCORD_BOT_TOKEN')
 
@@ -14,23 +13,13 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-users = set()
-file_path = "./users.txt"
-
-
-# Loading users from the file
-async def loadUsers():
-    global users
-    async with aiofiles.open(file_path, "r") as file:
-        async for line in file:
-            users.add(line)
+users = database.get_users()
 
 
 # Start the bot and load users to set
 @client.event
 async def on_ready():
     print(f"We have logged in as {client.user}")
-    await loadUsers()
 
 
 @client.event
@@ -39,21 +28,22 @@ async def on_message(message: discord.Message):
     if message.author == client.user:
         return
 
+    if not isinstance(message.channel, discord.DMChannel):
+        return
+
     author = str(message.author)
 
     # Check if users is on file if not add it
     if author not in users:
-        users.add(author)
-        await message.channel.send("Your questions have been added")
-        # Write usernames to users files
-        async with aiofiles.open(file_path, "w") as file:
-            await file.write(author + "\n")
-        # Write questions on questions file
-        async with aiofiles.open("questions.md", "w") as file:
-            await file.write(message.content)
+        database.add_users(author, message.content)
+        print(f"Added {author} with message {message.content}")
+        await message.channel.send("Adding your questions...")
+
+        async aiofiles.open("./questions.md", "w")
+
     else:
         # Send this message if user already sent a message
         await message.channel.send("You have already sent your questions")
 
 
-client.run(bot_token)
+client.run(config.DISCORD_TOKEN)
