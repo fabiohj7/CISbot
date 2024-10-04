@@ -1,19 +1,15 @@
-import asyncio
 import os
+import time
 
 import aiofiles
 import discord
 
 from . import config, database
 
-bot_token = os.getenv('DISCORD_BOT_TOKEN')
-
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
-
-users = database.get_users()
 
 
 # Start the bot and load users to set
@@ -28,18 +24,24 @@ async def on_message(message: discord.Message):
     if message.author == client.user:
         return
 
+    # Just use the DM channel
     if not isinstance(message.channel, discord.DMChannel):
         return
 
     author = str(message.author)
 
+    # Get all the users
+    users = database.get_users()
     # Check if users is on file if not add it
     if author not in users:
         database.add_users(author, message.content)
         print(f"Added {author} with message {message.content}")
         await message.channel.send("Adding your questions...")
+        time.sleep(2)
+        await message.channel.send("Questions have been submited")
 
-        async aiofiles.open("./questions.md", "w")
+        with open("./questions.md", "a") as file:
+            file.write(message.content + "\n")
 
     else:
         # Send this message if user already sent a message

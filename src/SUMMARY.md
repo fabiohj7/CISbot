@@ -1,3 +1,3 @@
 # Summary
 
-- [Exam1](./questions.md)
+- [Exam1](../questions.md)

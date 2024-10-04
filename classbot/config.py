@@ -4,5 +4,5 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DB_PATH = os.environ.get('DB_PATH', './.cache/CIS.db')
+DB_PATH = os.environ.get('DB_PATH', './cisbot.db')
 DISCORD_TOKEN = os.environ['DISCORD_TOKEN']
