@@ -1,51 +1,13 @@
 # CIS 340 Questions (Section 1)
-
 ## group 3
 
-hello?  
-a) yes?
-b) uh uh
+1) what is op?
+a) overpowered
+b) supetpowered
+c) otherpowder.   
 
-## group 34
+2) what is c
+a) this is 
+b) hello
+c) world
 
-question?
-a) yes
-b) no
-
-## abhi
-
-submit arstarst
-
-submit fuuuuuuck
-
-submit <h1>group me</h1> stalin did nothing wrong
-
-timeleft
-
-timeleft
-
-help
-
-submit hello
-
-submit
-
-ieont
-
-submit
-
-help
-
-hello
-
-hello
-
-hello
-
-hello
-
-hello
-
-helloooo!!
-
-this is my first message
