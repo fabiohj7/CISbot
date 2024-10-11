@@ -12,7 +12,8 @@ def connect():
     c.execute('''
         CREATE TABLE IF NOT EXISTS questions (
             username TEXT,
-            question TEXT
+            question TEXT,
+            section TEXT
         )
 
     ''')
@@ -37,7 +38,7 @@ def remove_questions_by_user(username):
     WHERE username = ?
     '''
 
-    conn.execute(query, (username))
+    conn.execute(query, (username, ))
     conn.commit()
     conn.close()
 
@@ -63,4 +64,27 @@ def add_users(username, question):
     '''
     conn.execute(query, (username, question))
     conn.commit()
+    conn.close()
+
+
+def add_section(username, section):
+    conn = connect()
+    query = '''
+    INSERT INTO questions (section)
+    WHERE username = (?)
+    VALUES (?)
+    '''
+
+    conn.execute(query, (username, section))
+    conn.close()
+
+
+def get_section_by_user(username):
+    conn = connect()
+    query = '''
+    SELECT section
+    FROM questions
+    WHERE username = (?)
+    '''
+    return conn.execute(query, (username, )).fetchone()
     conn.close()
