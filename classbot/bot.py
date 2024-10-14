@@ -38,16 +38,6 @@ async def on_message(message: discord.Message):
     author = str(message.author)
     content = message.content.lower().strip()
 
-    section = database.get_section_by_user(author)
-    print(section)
-
-    # Add section
-    if section == None:
-        await message.channel.send(
-            "I don't recognize you what, section are you?")
-        await check_section(message)
-        return
-
     # Get all the users
     users = database.get_users()
     if author in questions_handler and questions_handler[author]:
@@ -98,22 +88,6 @@ async def submission(message: discord.Message):
     subprocess.run(["git", "commit", "-m", "Add questions"])
     subprocess.run(["git", "push", "origin", "main"])
     await message.channel.send(config.SUBMITTED_MESSAGE)
-
-
-async def check_section(message):
-    if message.author == client.user:
-        return
-    if not isinstance(message.channel, discord.DMChannel):
-        return
-
-    author = str(message.author)
-    content = message.content
-    content = content.lower().strip()
-    if content != "section1" or content != "section2" and not tries:
-        await message.channel.send("That section does not exist!")
-        return
-
-    database.add_section(author, content)
 
 
 async def timeleft(message):
