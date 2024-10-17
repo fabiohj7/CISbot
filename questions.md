@@ -1,8 +1,8 @@
 # CIS 340 Questions (Section 1)
 *fabiohj7*
-# Group x
+# TA Message
 What is my name?  
-a) heisengberg  
+a) Heisenberg  
 b) Batman  
-c) Blake  
+c) Ben Blake  
 
