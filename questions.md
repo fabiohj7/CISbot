@@ -1,14 +1,5 @@
 # CIS 340 Questions (Section 1)
 *fabiohj7*
-# Hello
-This is my question  
-
----a) hello  
-
----b) this  
-
----
-*fabiohj7*
 # Group (Number)
 Question?  
 a) option a  
@@ -20,5 +11,5 @@ Question 2?
 a) true  
 b) false  
 Answer: a  
-
 ---
+
