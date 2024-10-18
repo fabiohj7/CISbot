@@ -16,7 +16,7 @@ client = discord.Client(intents=intents)
 questions_handler = {}
 
 # Due date here
-target_datetime = datetime(2024, 11, 25, 23, 30, 0)
+target_datetime = datetime(2024, 10, 29, 23, 59, 59)
 
 
 # Start the bot and load users to set
@@ -83,7 +83,7 @@ async def submission(message: discord.Message):
     content = formatContent(message.content)
     print(content)
     async with aiofiles.open("./questions.md", "a") as file:
-        await file.write(content + "\n")
+        await file.write(f"*{author}*\n" + content + "\n")
     subprocess.run(["git", "add", "questions.md"])
     subprocess.run(["git", "commit", "-m", "Add questions"])
     subprocess.run(["git", "push", "origin", "main"])
@@ -120,6 +120,8 @@ def formatContent(content):
         line = line.strip()
         line = line + "  \n"
         final += line
+
+    final += '\n---\n'
 
     return final
 
