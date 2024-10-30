@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 import aiofiles
 import discord
+from discord.message import Attachment
 
 from . import config, database
 
@@ -55,7 +56,7 @@ async def on_message(message: discord.Message):
     elif content == 'submit':
         if author not in users:
             questions_handler[author] = True
-            await message.channel.send("Submit your questions with a message: "
+            await message.channel.send("Submit your questions with a message or a file: "
                                        )
             return
         else:
@@ -74,13 +75,44 @@ async def submission(message: discord.Message):
     if not isinstance(message.channel, discord.DMChannel):
         return
 
+    if len(message.attachments) == 0:
+        await message.channel.send('Type `help` or you can also attch a file with your questions.')
+
+    if len(message.attachments) > 1:
+        await message.channel.send('Please submit just one file.')
+
+    attachment = message.attachments[0]
+
     author = str(message.author)
     content = message.content.lower()
 
     database.add_users(author, content)
     print(f"Added {author} with message {content}")
+
+    file_path = f"./classbot/attachments/{attachment.filename}"
+    try:
+        await attachment.save(file_path)
+
+        if os.path.exists(file_path):
+            print(f"File saved: {file_path}")
+
+        else:
+            print(f"Failed to save the file {file_path}")
+            return
+    except Exception as e:
+        print(f"Error saving attachment: {e}")
+        await message.channel.send('Error submitting your file, please contact Fabio for more help.')
+        return
+
+    async with aiofiles.open(file_path, 'r') as attached_file:
+        attachment_content = await attached_file.read()
+
+    content = content + '\n' + attachment_content
+
+    print(content)
+
     await message.channel.send("Adding your questions...")
-    content = formatContent(message.content)
+    content = formatContent(content)
     print(content)
     async with aiofiles.open("./questions.md", "a") as file:
         await file.write(f"*{author}*\n" + content + "\n")
